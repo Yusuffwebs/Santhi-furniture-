@@ -410,6 +410,7 @@
         }
 
         /* ===== SHOP CATEGORY SECTION ===== */
+        /* FIXED: Proper image scaling in circles */
         .shop-category {
             padding: 50px 20px;
             text-align: center;
@@ -434,12 +435,12 @@
             text-decoration: none;
             color: #333;
             font-weight: 600;
-            transition: none;
+            transition: transform 0.3s ease;
         }
 
         .category-card:hover {
-            transform: none;
-            color: #333;
+            transform: translateY(-5px);
+            color: var(--secondary);
         }
 
         .circle {
@@ -454,18 +455,29 @@
             justify-content: center;
             position: relative;
             border: 2px solid #f2c7a6;
+            transition: var(--transition);
         }
 
+        .category-card:hover .circle {
+            border-color: var(--secondary);
+            background: #fff9f5;
+        }
+
+        /* FIXED: Proper image scaling - NOT zoomed */
         .circle img {
-            width: 160%;
-            height: 160%;
-            object-fit: cover;
+            width: 75%; /* Reduced from 160% to 75% */
+            height: 75%; /* Reduced from 160% to 75% */
+            object-fit: contain; /* Changed from cover to contain */
             transition: transform 0.3s ease;
-            transform: scale(1.2);
+            transform: scale(1); /* Removed initial zoom */
+        }
+
+        .category-card:hover .circle img {
+            transform: scale(1.1); /* Gentle hover effect */
         }
 
         .category-card:active .circle img {
-            transform: scale(1.4);
+            transform: scale(1.05); /* Reduced active zoom */
         }
 
         .category-card span {
@@ -1261,9 +1273,10 @@
                 height: 100px;
             }
             
+            /* FIXED: Proper image scaling for tablet */
             .circle img {
-                width: 170%;
-                height: 170%;
+                width: 70%; /* Adjusted for tablet */
+                height: 70%; /* Adjusted for tablet */
             }
         }
 
@@ -1550,11 +1563,6 @@
             .circle {
                 width: 80px;
                 height: 80px;
-            }
-            
-            .circle img {
-                width: 180%;
-                height: 180%;
             }
             
             .category-card span {
