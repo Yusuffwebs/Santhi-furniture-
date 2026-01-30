@@ -410,7 +410,7 @@
         }
 
         /* ===== SHOP CATEGORY SECTION ===== */
-        /* FIXED: Proper image scaling in circles */
+        /* FIXED: WHITE BACKGROUND INSIDE CIRCLE */
         .shop-category {
             padding: 50px 20px;
             text-align: center;
@@ -449,35 +449,37 @@
             margin: auto;
             border-radius: 50%;
             overflow: hidden;
-            background: #f2f2f2;
+            background: #ffffff; /* CHANGED TO WHITE */
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             border: 2px solid #f2c7a6;
             transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Added subtle shadow */
         }
 
         .category-card:hover .circle {
             border-color: var(--secondary);
-            background: #fff9f5;
+            background: #ffffff; /* Keep white on hover */
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15); /* Enhanced shadow on hover */
         }
 
-        /* FIXED: Proper image scaling - NOT zoomed */
+        /* FIXED: Proper image scaling */
         .circle img {
-            width: 75%; /* Reduced from 160% to 75% */
-            height: 75%; /* Reduced from 160% to 75% */
-            object-fit: contain; /* Changed from cover to contain */
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
             transition: transform 0.3s ease;
-            transform: scale(1); /* Removed initial zoom */
+            transform: scale(1);
         }
 
         .category-card:hover .circle img {
-            transform: scale(1.1); /* Gentle hover effect */
+            transform: scale(1.1);
         }
 
         .category-card:active .circle img {
-            transform: scale(1.05); /* Reduced active zoom */
+            transform: scale(1.05);
         }
 
         .category-card span {
@@ -1275,8 +1277,8 @@
             
             /* FIXED: Proper image scaling for tablet */
             .circle img {
-                width: 70%; /* Adjusted for tablet */
-                height: 70%; /* Adjusted for tablet */
+                width: 70%;
+                height: 70%;
             }
         }
 
