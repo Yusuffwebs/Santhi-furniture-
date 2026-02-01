@@ -409,8 +409,119 @@
             margin-left: auto;
         }
 
+        /* ===== SEARCH BAR SECTION (ADDED) ===== */
+        .search-section {
+            background: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: none;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f4f6f8;
+            border-radius: 50px;
+            padding: 0 15px;
+            height: 48px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .search-bar:focus-within {
+            background: #ffffff;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 4px rgba(255,107,53,0.08);
+        }
+
+        .search-bar i {
+            color: #888;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            max-height: 350px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid var(--light-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background: var(--light);
+        }
+
+        .search-result-item img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        .search-result-info h4 {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .search-result-info p {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: var(--gray);
+        }
+
         /* ===== SHOP CATEGORY SECTION ===== */
-        /* FIXED: WHITE BACKGROUND INSIDE CIRCLE */
         .shop-category {
             padding: 50px 20px;
             text-align: center;
@@ -449,23 +560,22 @@
             margin: auto;
             border-radius: 50%;
             overflow: hidden;
-            background: #ffffff; /* CHANGED TO WHITE */
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             border: 2px solid #f2c7a6;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Added subtle shadow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .category-card:hover .circle {
             border-color: var(--secondary);
-            background: #ffffff; /* Keep white on hover */
-            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15); /* Enhanced shadow on hover */
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15);
         }
 
-        /* FIXED: Proper image scaling */
         .circle img {
             width: 75%;
             height: 75%;
@@ -752,7 +862,7 @@
             animation: fadeRight 0.6s ease forwards;
         }
 
-        /* ===== DESIGN YOUR COMFORT SECTION (FIXED SPACING) ===== */
+        /* ===== DESIGN YOUR COMFORT SECTION ===== */
         .hero {
             display: flex;
             align-items: center;
@@ -1100,99 +1210,74 @@
         }
 
         /* ===== MODAL STYLES ===== */
-        .modal {
+        .full-page-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: white;
             z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-content {
-            background-color: white;
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            animation: modalFadeIn 0.3s ease;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
         }
 
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-header {
-            background: var(--gradient);
-            color: white;
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .close-modal {
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             background: none;
             border: none;
-            color: white;
-            font-size: 1.8rem;
+            color: var(--gray);
+            font-size: 2rem;
             cursor: pointer;
             transition: var(--transition);
-            line-height: 1;
-            padding: 5px;
-        }
-
-        .close-modal:hover {
-            transform: scale(1.2);
-        }
-
-        .modal-body {
-            padding: 25px;
-            max-height: calc(90vh - 90px);
-            overflow-y: auto;
-        }
-
-        .service-item {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .service-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .service-item h4 {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 8px;
+            z-index: 100;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            border-radius: 50%;
         }
 
-        .service-item h4 i {
-            color: var(--secondary);
+        .modal-close-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--dark);
         }
 
-        .service-item p {
-            color: var(--gray);
-            line-height: 1.6;
+        /* ===== NOTIFICATION STYLES ===== */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            max-width: 300px;
+            font-weight: 600;
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -1275,10 +1360,13 @@
                 height: 100px;
             }
             
-            /* FIXED: Proper image scaling for tablet */
             .circle img {
                 width: 70%;
                 height: 70%;
+            }
+
+            .search-section {
+                display: block;
             }
         }
 
@@ -1294,6 +1382,10 @@
             
             .header-search {
                 display: none;
+            }
+
+            .search-section {
+                display: block;
             }
             
             /* Sections */
@@ -1537,18 +1629,6 @@
             .map-card iframe {
                 min-height: 300px;
             }
-            
-            .modal-content {
-                max-height: 85vh;
-            }
-            
-            .modal-header {
-                padding: 15px 20px;
-            }
-            
-            .modal-body {
-                padding: 20px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -1729,9 +1809,9 @@
                 <!-- Navigation -->
                 <nav class="nav-links">
                     <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
-                    <a href="#"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
+                    <a href="#" id="desktopCartIcon"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count" id="desktopCartCount">0</span></a>
                     <a href="#location"><i class="fas fa-map-marker-alt"></i> Location</a>
-                    <a href="#" class="customer-service-link"><i class="fas fa-headset"></i> Service</a>
+                    <a href="#" class="customer-service-link" data-service="contact"><i class="fas fa-headset"></i> Customer Service</a>
                 </nav>
             </div>
 
@@ -1746,9 +1826,9 @@
                 </div>
                 
                 <div class="mobile-nav-right">
-                    <a href="#" class="cart-icon">
+                    <a href="#" id="mobileCartIcon" class="cart-icon">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">0</span>
+                        <span class="cart-count" id="mobileCartCount">0</span>
                     </a>
                     <button class="mobile-menu-btn" id="mobileMenuBtn">
                         <i class="fas fa-bars"></i>
@@ -1772,17 +1852,30 @@
 
                     <ul>
                         <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="#"><i class="fas fa-couch"></i> Furniture</a></li>
-                        <li><a href="#"><i class="fas fa-blender"></i> Home Appliances</a></li>
+                        <li><a href="products.html"><i class="fas fa-shopping-bag"></i> Products</a></li>
+                        <li><a href="#" id="mobileCartLink"><i class="fas fa-shopping-cart"></i> Cart <span class="mobile-cart-count" id="mobileCartCount2">0</span></a></li>
                         <li><a href="#location"><i class="fas fa-map-marker-alt"></i> Location</a></li>
                         <li><a href="#" class="customer-service-link" data-service="contact"><i class="fas fa-headset"></i> Customer Service</a></li>
                         <li><a href="#" class="customer-service-link" data-service="warranty"><i class="fas fa-shield-alt"></i> Warranty</a></li>
-                        <li><a href="#" class="customer-service-link" data-service="faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#" class="customer-service-link" data-service="get-work"><i class="fas fa-briefcase"></i> Get Work</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- Search Section (Added) -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="mobileSiteSearch" placeholder="Search products by name, category, or features...">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Main Content -->
     <main>
@@ -1790,73 +1883,73 @@
         <section class="shop-category">
             <h2>Shop by Category</h2>
             <div class="category-grid">
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=sofas" class="category-card">
                     <div class="circle">
                         <img src="images/sofa.png" alt="Sofas">
                     </div>
                     <span>Sofas</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=beds" class="category-card">
                     <div class="circle">
                         <img src="images/bed.png" alt="Beds">
                     </div>
                     <span>Beds</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=dining" class="category-card">
                     <div class="circle">
                         <img src="images/dinning.png" alt="Dining Table">
                     </div>
                     <span>Dining Table</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=wardrobe" class="category-card">
                     <div class="circle">
                         <img src="images/wardrobe.png" alt="Wardrobe">
                     </div>
                     <span>Wardrobe</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=dressing" class="category-card">
                     <div class="circle">
                         <img src="images/dress.png" alt="Dressing Table">
                     </div>
                     <span>Dressing Table</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=mattress" class="category-card">
                     <div class="circle">
                         <img src="images/mattress.png" alt="Mattress">
                     </div>
                     <span>Mattress</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=pooja" class="category-card">
                     <div class="circle">
                         <img src="images/pooja.png" alt="Pooja Unit">
                     </div>
                     <span>Pooja Unit</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=furniture&subcategory=teapoy" class="category-card">
                     <div class="circle">
                         <img src="images/teapoy.png" alt="Teapoy">
                     </div>
                     <span>Teapoy</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=appliances&subcategory=tv" class="category-card">
                     <div class="circle">
                         <img src="images/tv.png" alt="TV">
                     </div>
                     <span>TV</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=appliances&subcategory=washing" class="category-card">
                     <div class="circle">
                         <img src="images/washing machine.png" alt="Washing Machine">
                     </div>
                     <span>Washing Machine</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=appliances&subcategory=refrigerator" class="category-card">
                     <div class="circle">
                         <img src="images/refrigerator.png" alt="Refrigerator">
                     </div>
                     <span>Refrigerator</span>
                 </a>
-                <a href="#" class="category-card">
+                <a href="products.html?category=appliances&subcategory=other" class="category-card">
                     <div class="circle">
                         <img src="images/other.png" alt="Other Appliances">
                     </div>
@@ -1874,21 +1967,21 @@
                 </div>
                 
                 <div class="hero-grid">
-                    <div class="hero-card furniture">
+                    <a href="products.html?category=furniture" class="hero-card furniture">
                         <div class="hero-content">
                             <h2>Furniture Collection</h2>
                             <p>Sofas, Beds, Dining Sets & Modern Furniture</p>
-                        <a href="products.html" class="btn btn-primary">Shop Now</a>
+                            <span class="btn btn-primary">Shop Now</span>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="hero-card appliances">
+                    <a href="products.html?category=appliances" class="hero-card appliances">
                         <div class="hero-content">
                             <h2>Home Appliances</h2>
                             <p>Refrigerators, Washing Machines & Kitchen Appliances</p>
-                            <a href="#" class="btn btn-primary">Shop Now</a>
+                            <span class="btn btn-primary">Shop Now</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -1963,7 +2056,7 @@
             <div class="hero-text">
                 <h1>Designing Your Comfort</h1>
                 <p>Stylish Furniture for Modern Living & Home appliances</p>
-                <a href="#" class="btn btn-primary">Explore Collection</a>
+                <a href="products.html" class="btn btn-primary">Explore Collection</a>
             </div>
             <div class="hero-images">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7" alt="Modern Sofa" class="img-main">
@@ -2098,24 +2191,50 @@
     </footer>
 
     <!-- Customer Service Modal -->
-    <div class="modal" id="serviceModal">
+    <div class="full-page-modal" id="serviceModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Customer Service</h3>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody">
+            <button class="modal-close-btn" id="closeServiceModal">&times;</button>
+            <div id="modalBody">
                 <!-- Content will be loaded here dynamically -->
             </div>
         </div>
     </div>
 
+    <!-- Cart Modal -->
+    <div class="full-page-modal" id="cartModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="closeCartModal">&times;</button>
+            <div class="cart-full" id="cartFullContent">
+                <!-- Cart content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Mobile Navigation
+        // State Management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // DOM Elements
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileNavLinks = document.getElementById('mobileNavLinks');
         const closeMenuBtn = document.getElementById('closeMenuBtn');
-        
+        const desktopCartIcon = document.getElementById('desktopCartIcon');
+        const mobileCartIcon = document.getElementById('mobileCartIcon');
+        const mobileCartLink = document.getElementById('mobileCartLink');
+        const cartCountElements = document.querySelectorAll('.cart-count, .mobile-cart-count');
+        const desktopCartCount = document.getElementById('desktopCartCount');
+        const mobileCartCount = document.getElementById('mobileCartCount');
+        const mobileCartCount2 = document.getElementById('mobileCartCount2');
+        const cartModal = document.getElementById('cartModal');
+        const closeCartModal = document.getElementById('closeCartModal');
+        const serviceModal = document.getElementById('serviceModal');
+        const closeServiceModal = document.getElementById('closeServiceModal');
+        const modalBody = document.getElementById('modalBody');
+        const searchInput = document.getElementById('siteSearch');
+        const mobileSearchInput = document.getElementById('mobileSiteSearch');
+        const searchResults = document.getElementById('searchResults');
+
+        // Mobile Navigation
         mobileMenuBtn.addEventListener('click', () => {
             mobileNavLinks.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2182,225 +2301,720 @@
         sliderContainer.addEventListener('mouseleave', () => {
             slideInterval = setInterval(nextSlide, 5000);
         });
-        
-        // Search functionality
-        const searchInputs = document.querySelectorAll('.header-search input, #siteSearch');
-        searchInputs.forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && input.value.trim() !== '') {
-                    alert(`Searching for: ${input.value}`);
-                    // In a real implementation, this would redirect to search results
+
+        // Update Cart Count
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElements.forEach(element => {
+                element.textContent = totalItems;
+            });
+            desktopCartCount.textContent = totalItems;
+            mobileCartCount.textContent = totalItems;
+            mobileCartCount2.textContent = totalItems;
+            
+            // Save to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Show Cart Modal
+        function showCartModalFunc() {
+            renderCart();
+            cartModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Render Cart
+        function renderCart() {
+            const cartFullContent = document.getElementById('cartFullContent');
+            cartFullContent.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartFullContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some products to get started!</p>
+                        <a href="products.html" class="btn btn-primary" style="margin-top: 20px; display: inline-flex;">
+                            <i class="fas fa-shopping-bag"></i> Continue Shopping
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            let total = 0;
+            let cartItemsHTML = '';
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                cartItemsHTML += `
+                    <div class="cart-item-full">
+                        <div class="cart-item-image">
+                            <img src="${item.image || 'https://via.placeholder.com/150x150?text=Product'}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150x150?text=Product'">
+                        </div>
+                        <div class="cart-item-details">
+                            <h4 class="cart-item-title">${item.name}</h4>
+                            <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="cart-item-total">₹${itemTotal.toLocaleString()}</div>
+                                <button class="cart-item-remove" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartFullContent.innerHTML = `
+                <div class="cart-header">
+                    <h3>Shopping Cart</h3>
+                    <p>${cart.length} item${cart.length !== 1 ? 's' : ''} in your cart</p>
+                </div>
+                
+                <div class="cart-items-grid">
+                    ${cartItemsHTML}
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal:</span>
+                        <span class="summary-value">₹${total.toLocaleString()}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Delivery:</span>
+                        <span class="summary-value">Free</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Total:</span>
+                        <span class="cart-total">₹${total.toLocaleString()}</span>
+                    </div>
+                    
+                    <div class="cart-actions">
+                        <button class="btn-clear-cart" id="clearCartBtn">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                        <button class="btn-checkout" id="checkoutBtn">
+                            <i class="fab fa-whatsapp"></i> Checkout on WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to quantity buttons
+            document.querySelectorAll('.quantity-btn.decrease').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = e.target.closest('button').dataset.id;
+                    const item = cart.find(item => item.id === productId);
+                    if (item) {
+                        updateQuantity(productId, item.quantity - 1);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.increase').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = e.target.closest('button').dataset.id;
+                    const item = cart.find(item => item.id === productId);
+                    if (item) {
+                        updateQuantity(productId, item.quantity + 1);
+                    }
+                });
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = e.target.closest('button').dataset.id;
+                    removeFromCart(productId);
+                });
+            });
+            
+            // Add event listeners to cart action buttons
+            document.getElementById('clearCartBtn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    showNotification('Cart is already empty!');
+                    return;
+                }
+                
+                if (confirm('Are you sure you want to clear your cart?')) {
+                    cart = [];
+                    updateCartCount();
+                    renderCart();
+                    showNotification('Cart cleared!');
                 }
             });
-        });
-        
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
+            
+            document.getElementById('checkoutBtn').addEventListener('click', () => {
+                let message = 'Hello! I would like to order the following items from Santhi Furniture:\n\n';
+                let total = 0;
                 
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    message += `• ${item.name} x${item.quantity} - ₹${itemTotal.toLocaleString()}\n`;
+                });
                 
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
+                message += `\nTotal: ₹${total.toLocaleString()}\n`;
+                message += `\nMy Details:\nName: [Please provide your name]\nAddress: [Please provide your address]\nPhone: [Please provide your phone number]\n\nPlease confirm my order.`;
+                
+                const phoneNumber = '919443190337';
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                
+                window.open(whatsappUrl, '_blank');
             });
-        });
-        
-        // Customer Service Modal
-        const serviceModal = document.getElementById('serviceModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModal = document.getElementById('closeModal');
-        
+        }
+
+        // Update Quantity
+        function updateQuantity(productId, newQuantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                if (newQuantity < 1) {
+                    removeFromCart(productId);
+                } else {
+                    item.quantity = newQuantity;
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        }
+
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartCount();
+            renderCart();
+        }
+
+        // Show Notification
+        function showNotification(message) {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--secondary);
+                color: white;
+                padding: 15px 20px;
+                border-radius: var(--radius);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+                box-shadow: var(--shadow-lg);
+                max-width: 300px;
+                font-weight: 600;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Search Functionality
+        function searchProducts(query) {
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                searchResults.classList.remove('active');
+                return;
+            }
+            
+            // For now, just show a message and redirect to products page
+            // In a real implementation, you would search through products
+            searchResults.innerHTML = `
+                <div class="search-result-item" id="searchRedirect">
+                    <i class="fas fa-search" style="font-size: 1.2rem; color: var(--secondary);"></i>
+                    <div class="search-result-info">
+                        <h4>Search for "${query}"</h4>
+                        <p>Click to search in products page</p>
+                    </div>
+                </div>
+            `;
+            
+            searchResults.classList.add('active');
+            
+            // Add click event to result item
+            document.getElementById('searchRedirect').addEventListener('click', () => {
+                window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+            });
+        }
+
+        // Customer Service Data
         const serviceData = {
-            track: {
-                title: "Track Your Order",
+            contact: {
+                title: "Contact Support",
                 content: `
-                    <div class="service-item">
-                        <h4><i class="fas fa-shipping-fast"></i> Order Tracking</h4>
-                        <p>Track your order in real-time with our advanced tracking system. Enter your order number and email to get current status and estimated delivery date.</p>
-                        <p><strong>How to track:</strong><br>1. Go to "My Orders" in your account<br>2. Enter your order number<br>3. View detailed tracking information</p>
-                    </div>
-                    <div class="service-item">
-                        <h4><i class="fas fa-phone-alt"></i> Need Help?</h4>
-                        <p>If you're having trouble tracking your order, contact our customer support team at <strong>1800-123-4567</strong> or email us at <strong>support@santhifurniture.com</strong>.</p>
-                    </div>
-                `
-            },
-            return: {
-                title: "Return & Exchange Policy",
-                content: `
-                    <div class="service-item">
-                        <h4><i class="fas fa-exchange-alt"></i> Easy Returns</h4>
-                        <p>We offer a 30-day return policy for most items. If you're not satisfied with your purchase, you can return it for a full refund or exchange.</p>
-                        <p><strong>Conditions:</strong><br>• Item must be in original condition<br>• All accessories and manuals included<br>• Original packaging required<br>• Return within 30 days of delivery</p>
-                    </div>
-                    <div class="service-item">
-                        <h4><i class="fas fa-sync-alt"></i> Exchange Process</h4>
-                        <p>To exchange an item, please contact our customer service to initiate the process. Exchanges are subject to product availability.</p>
+                    <div style="max-width: 800px; margin: 0 auto; padding-top: 40px;">
+                        <div class="service-item">
+                            <h4><i class="fas fa-phone-alt"></i> Contact Information</h4>
+                            <p><strong>Customer Support:</strong> +91 9443190337<br><strong>WhatsApp:</strong> +91 9443190337<br><strong>Email:</strong> santhifurnituremart@gmail.com</p>
+                            <p><strong>Service Hours:</strong><br>Monday to Saturday: 9 AM - 9 PM<br>Sunday: 10 AM - 6 PM</p>
+                        </div>
+                        <div class="service-item">
+                            <h4><i class="fas fa-map-marker-alt"></i> Store Location</h4>
+                            <p><strong>Address:</strong><br>Veerapathra Samy koil street(opp:Bombay Watch),<br>Nagapattinam, Tamil Nadu</p>
+                        </div>
                     </div>
                 `
             },
             warranty: {
                 title: "Warranty Information",
                 content: `
-                    <div class="service-item">
-                        <h4><i class="fas fa-shield-alt"></i> Product Warranty</h4>
-                        <p>All our products come with comprehensive warranty coverage. Warranty periods vary by product category:</p>
-                        <p><strong>Furniture:</strong> 5 years structural warranty<br><strong>Electronics:</strong> 2-3 years manufacturer warranty<br><strong>Appliances:</strong> 1-2 years comprehensive warranty</p>
-                    </div>
-                    <div class="service-item">
-                        <h4><i class="fas fa-tools"></i> Warranty Claims</h4>
-                        <p>To file a warranty claim, please have your purchase receipt and product serial number ready. Contact our service center at <strong>1800-123-4567</strong> or visit any of our service centers across India.</p>
-                    </div>
-                `
-            },
-            faq: {
-                title: "Frequently Asked Questions",
-                content: `
-                    <div class="service-item">
-                        <h4><i class="fas fa-question-circle"></i> Common Questions</h4>
-                        <p><strong>Q: What are your delivery charges?</strong><br>A: Free delivery on orders above ₹5000. Below ₹5000, delivery charges are ₹200.</p>
-                        <p><strong>Q: How long does delivery take?</strong><br>A: Standard delivery takes 3-7 business days. Express delivery is available in select cities.</p>
-                        <p><strong>Q: Do you offer installation services?</strong><br>A: Yes, we offer professional installation for furniture and appliances at an additional charge.</p>
-                        <p><strong>Q: Can I cancel my order?</strong><br>A: Orders can be cancelled within 24 hours of placement without any charges.</p>
+                    <div style="max-width: 800px; margin: 0 auto; padding-top: 40px;">
+                        <div class="service-item">
+                            <h4><i class="fas fa-shield-alt"></i> Warranty Coverage</h4>
+                            <p>All our furniture comes with a comprehensive warranty covering manufacturing defects.</p>
+                            <p><strong>Warranty Period:</strong><br>• Furniture: 1-3 years depending on product<br>• Home Appliances: As per manufacturer warranty</p>
+                        </div>
+                        <div class="service-item">
+                            <h4><i class="fas fa-headset"></i> Warranty Claims</h4>
+                            <p>For warranty claims, please contact our customer support with your purchase details.</p>
+                        </div>
                     </div>
                 `
             },
-            contact: {
-                title: "Contact Support",
+            'get-work': {
+                title: "Get Work",
                 content: `
-                    <div class="service-item">
-                        <h4><i class="fas fa-phone-alt"></i> Contact Information</h4>
-                        <p><strong>Customer Support:</strong> 1800-123-4567 (Toll-free)<br><strong>WhatsApp:</strong> +91 98765 43210<br><strong>Email:</strong> support@santhifurniture.com</p>
-                        <p><strong>Service Hours:</strong><br>Monday to Saturday: 9 AM - 9 PM<br>Sunday: 10 AM - 6 PM</p>
-                    </div>
-                    <div class="service-item">
-                        <h4><i class="fas fa-map-marker-alt"></i> Service Centers</h4>
-                        <p>We have service centers in all major cities across India. Visit our "Location" section to find the nearest service center to you.</p>
+                    <div style="max-width: 800px; margin: 0 auto; padding-top: 40px;">
+                        <div class="service-item">
+                            <h4><i class="fas fa-briefcase"></i> Custom Work & Services</h4>
+                            <p>We offer custom furniture design and fabrication services.</p>
+                            <p><strong>Our Services Include:</strong><br>• Custom furniture design<br>• Bulk orders for offices/hotels<br>• Furniture repair and restoration<br>• Interior design consultation</p>
+                        </div>
+                        <div class="service-item">
+                            <h4><i class="fas fa-phone-alt"></i> Contact for Custom Work</h4>
+                            <p>Call us at <strong>+91 9443190337</strong> or visit our store to discuss your requirements.</p>
+                        </div>
                     </div>
                 `
             }
         };
-        
-        // Open modal when clicking on customer service links
-        document.querySelectorAll('.customer-service-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+
+        // Initialize
+        function init() {
+            // Update cart count on load
+            updateCartCount();
+            
+            // Initialize slider
+            updateSlider();
+            
+            // Cart event listeners
+            desktopCartIcon.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                const serviceType = this.getAttribute('data-service') || 'contact';
-                const service = serviceData[serviceType];
-                
-                if (service) {
-                    modalTitle.textContent = service.title;
-                    modalBody.innerHTML = service.content;
-                    serviceModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                }
+                showCartModalFunc();
             });
-        });
-        
-        // Close modal
-        closeModal.addEventListener('click', () => {
-            serviceModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === serviceModal) {
+            
+            mobileCartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartModalFunc();
+            });
+            
+            mobileCartLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartModalFunc();
+            });
+            
+            // Close modals
+            closeCartModal.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            closeServiceModal.addEventListener('click', () => {
                 serviceModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
+            });
+            
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (cartModal.style.display === 'flex') {
+                        cartModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                    if (serviceModal.style.display === 'flex') {
+                        serviceModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                searchProducts(e.target.value);
+            });
+            
+            mobileSearchInput.addEventListener('input', (e) => {
+                searchProducts(e.target.value);
+            });
+            
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.header-search') && !e.target.closest('.search-bar')) {
+                    searchResults.classList.remove('active');
+                }
+            });
+            
+            // Customer Service Modal
+            document.querySelectorAll('.customer-service-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const serviceType = this.getAttribute('data-service') || 'contact';
+                    const service = serviceData[serviceType];
+                    
+                    if (service) {
+                        modalBody.innerHTML = service.content;
+                        serviceModal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+            
+            // Add CSS for service items
+            const style = document.createElement('style');
+            style.textContent = `
+                .service-item {
+                    margin-bottom: 25px;
+                    padding-bottom: 25px;
+                    border-bottom: 1px solid var(--light-gray);
+                }
+                .service-item:last-child {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+                .service-item h4 {
+                    font-size: 1.2rem;
+                    color: var(--primary);
+                    margin-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .service-item h4 i {
+                    color: var(--secondary);
+                }
+                .service-item p {
+                    color: var(--gray);
+                    line-height: 1.7;
+                    font-size: 1rem;
+                }
+                .service-item strong {
+                    color: var(--dark);
+                }
+                /* Cart styles */
+                .cart-full {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding-top: 40px;
+                }
+                .cart-header {
+                    margin-bottom: 25px;
+                }
+                .cart-header h3 {
+                    font-size: 1.8rem;
+                    color: var(--primary);
+                    margin-bottom: 8px;
+                }
+                .cart-header p {
+                    color: var(--gray);
+                    font-size: 0.9rem;
+                }
+                .cart-items-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                }
+                .cart-item-full {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 15px;
+                    background: white;
+                    border-radius: var(--radius);
+                    box-shadow: var(--shadow);
+                    align-items: center;
+                    text-align: center;
+                    height: 100%;
+                }
+                .cart-item-image {
+                    width: 100%;
+                    height: 180px;
+                    background: #f8f9fa;
+                    border-radius: var(--radius);
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 15px;
+                    margin-bottom: 15px;
+                }
+                .cart-item-image img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+                .cart-item-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    width: 100%;
+                    flex-grow: 1;
+                }
+                .cart-item-title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: var(--primary);
+                    margin: 0;
+                    line-height: 1.3;
+                }
+                .cart-item-price {
+                    font-size: 1.2rem;
+                    color: var(--secondary);
+                    font-weight: 700;
+                }
+                .cart-item-quantity {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    margin: 15px 0;
+                }
+                .quantity-btn {
+                    width: 36px;
+                    height: 36px;
+                    background: var(--light-gray);
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    transition: var(--transition);
+                }
+                .quantity-btn:hover {
+                    background: var(--gray);
+                    color: white;
+                }
+                .cart-item-quantity span {
+                    min-width: 40px;
+                    text-align: center;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                }
+                .cart-item-actions {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: auto;
+                }
+                .cart-item-total {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: var(--primary);
+                }
+                .cart-item-remove {
+                    background: none;
+                    border: none;
+                    color: #e53e3e;
+                    cursor: pointer;
+                    padding: 8px;
+                    font-size: 1.2rem;
+                    transition: var(--transition);
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                }
+                .cart-item-remove:hover {
+                    background: rgba(229, 62, 62, 0.1);
+                }
+                .cart-summary {
+                    background: white;
+                    padding: 20px;
+                    border-radius: var(--radius);
+                    box-shadow: var(--shadow);
+                    margin-top: 25px;
+                }
+                .summary-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid var(--light-gray);
+                }
+                .summary-row:last-child {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+                .summary-label {
+                    color: var(--gray);
+                    font-size: 0.9rem;
+                }
+                .summary-value {
+                    font-weight: 600;
+                    color: var(--dark);
+                    font-size: 0.9rem;
+                }
+                .cart-total {
+                    font-size: 1.3rem;
+                    color: var(--secondary);
+                    font-weight: 700;
+                }
+                .cart-actions {
+                    display: flex;
+                    gap: 12px;
+                    margin-top: 20px;
+                }
+                .btn-clear-cart {
+                    flex: 1;
+                    background: transparent;
+                    color: #e53e3e;
+                    border: 2px solid #e53e3e;
+                    padding: 12px;
+                    border-radius: var(--radius);
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    font-size: 0.9rem;
+                    height: 46px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                }
+                .btn-clear-cart:hover {
+                    background: #e53e3e;
+                    color: white;
+                }
+                .btn-checkout {
+                    flex: 2;
+                    background: var(--gradient-secondary);
+                    color: white;
+                    border: none;
+                    padding: 12px;
+                    border-radius: var(--radius);
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    font-size: 0.9rem;
+                    height: 46px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                }
+                .btn-checkout:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+                }
+                .empty-cart {
+                    text-align: center;
+                    padding: 60px 20px;
+                    color: var(--gray);
+                }
+                .empty-cart i {
+                    font-size: 4rem;
+                    color: var(--light-gray);
+                    margin-bottom: 15px;
+                }
+                .empty-cart h3 {
+                    font-size: 1.5rem;
+                    color: var(--primary);
+                    margin-bottom: 8px;
+                }
+                .empty-cart p {
+                    font-size: 1rem;
+                    margin-bottom: 25px;
+                }
+                @media (max-width: 768px) {
+                    .cart-items-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 15px;
+                    }
+                }
+                @media (max-width: 480px) {
+                    .cart-items-grid {
+                        grid-template-columns: 1fr;
+                        gap: 12px;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Scroll animations for About Brand section
+            const aboutBrandElements = document.querySelectorAll('.tagline, .brand-name, .description, .features-title');
+            const featuresListItems = document.querySelectorAll('.features li');
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            // Scroll animation function
+            function handleScrollAnimations() {
+                // About Brand animations
+                aboutBrandElements.forEach((el, index) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        el.classList.add('fade-up');
+                        el.style.animationDelay = `${index * 0.2}s`;
+                    }
+                });
+                
+                // Features list animations
+                featuresListItems.forEach((item, index) => {
+                    const rect = item.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        item.classList.add('fade-right');
+                        item.style.animationDelay = `${1.1 + index * 0.2}s`;
+                    }
+                });
+                
+                // Why Choose Us feature cards animations
+                featureCards.forEach((card, index) => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        card.classList.add('animate');
+                        card.style.animationDelay = `${index * 0.2}s`;
+                    }
+                });
             }
-        });
-        
-        // Add touch feedback to cards on mobile
-        document.querySelectorAll('.hero-card, .feature-card').forEach(card => {
-            card.addEventListener('touchstart', function() {
-                this.style.transform = 'translateY(-3px)';
-            });
             
-            card.addEventListener('touchend', function() {
-                this.style.transform = '';
-            });
-        });
-        
-        // Scroll animations for About Brand section
-        const aboutBrandElements = document.querySelectorAll('.tagline, .brand-name, .description, .features-title');
-        const featuresListItems = document.querySelectorAll('.features li');
-        const featureCards = document.querySelectorAll('.feature-card');
-        
-        // Initialize with first slide
-        updateSlider();
-        
-        // Scroll animation function
-        function handleScrollAnimations() {
-            // About Brand animations
-            aboutBrandElements.forEach((el, index) => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    el.classList.add('fade-up');
-                    el.style.animationDelay = `${index * 0.2}s`;
-                }
-            });
+            // Initial check on page load
+            window.addEventListener('load', handleScrollAnimations);
             
-            // Features list animations
-            featuresListItems.forEach((item, index) => {
-                const rect = item.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    item.classList.add('fade-right');
-                    item.style.animationDelay = `${1.1 + index * 0.2}s`;
-                }
-            });
-            
-            // Why Choose Us feature cards animations
-            featureCards.forEach((card, index) => {
-                const rect = card.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    card.classList.add('animate');
-                    card.style.animationDelay = `${index * 0.2}s`;
-                }
-            });
+            // Check on scroll
+            window.addEventListener('scroll', handleScrollAnimations);
         }
-        
-        // Initial check on page load
-        window.addEventListener('load', handleScrollAnimations);
-        
-        // Check on scroll
-        window.addEventListener('scroll', handleScrollAnimations);
-        
-        // Cart functionality
-        let cartCount = 0;
-        const cartCountElements = document.querySelectorAll('.cart-count');
-        
-        function updateCartCount() {
-            cartCountElements.forEach(element => {
-                element.textContent = cartCount;
-            });
-        }
-        
-        // Example function to add to cart
-        function addToCart() {
-            cartCount++;
-            updateCartCount();
-        }
-        
-        // Example function to remove from cart
-        function removeFromCart() {
-            if (cartCount > 0) {
-                cartCount--;
-                updateCartCount();
-            }
-        }
-        
-        // Initialize cart count
-        updateCartCount();
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
