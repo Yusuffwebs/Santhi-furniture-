@@ -204,6 +204,7 @@
         .nav-links {
             display: flex;
             gap: 25px;
+            margin-left: auto;
         }
 
         .nav-links a {
@@ -257,42 +258,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* Header Search Bar */
-        .header-search {
-            flex: 1;
-            max-width: 520px;
-            margin: 0 25px;
-            display: flex;
-            align-items: center;
-            background: #f4f6f8;
-            border-radius: 50px;
-            padding: 0 18px;
-            height: 46px;
-            border: 2px solid transparent;
-            transition: var(--transition);
-        }
-
-        .header-search:focus-within {
-            background: #ffffff;
-            border-color: #ff6b35;
-            box-shadow: 0 0 0 4px rgba(255,107,53,0.08);
-        }
-
-        .header-search i {
-            color: #888;
-            font-size: 15px;
-            margin-right: 10px;
-        }
-
-        .header-search input {
-            border: none;
-            outline: none;
-            background: transparent;
-            width: 100%;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
         }
 
         /* Mobile Navigation */
@@ -414,12 +379,12 @@
             margin-left: auto;
         }
 
-        /* ===== SEARCH BAR SECTION (ADDED) ===== */
+        /* ===== SEARCH BAR SECTION (ALWAYS VISIBLE) ===== */
         .search-section {
             background: white;
             padding: 15px 0;
             border-bottom: 1px solid var(--light-gray);
-            display: none;
+            display: block; /* Always visible */
         }
 
         .search-container {
@@ -438,6 +403,9 @@
             border: 2px solid transparent;
             transition: var(--transition);
             position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .search-bar:focus-within {
@@ -603,21 +571,31 @@
             font-size: 14px;
         }
 
-        /* ===== HERO SECTION (UPDATED) ===== */
+        /* ===== HERO SECTION (SMALLER) ===== */
         .hero-section {
-            padding: 40px 0 50px;
+            padding: 20px 0 30px; /* reduced from 40px 0 50px */
             background: linear-gradient(135deg, #ffffff 0%, #fdf7ef 100%);
             text-align: center;
         }
 
+        .hero-section .section-title h2 {
+            font-size: 2rem; /* slightly smaller */
+            margin-bottom: 10px;
+        }
+
+        .hero-section .section-title p {
+            font-size: 1rem;
+            margin-top: 15px;
+        }
+
         .hero-cta {
-            margin-top: 30px;
+            margin-top: 20px; /* reduced */
         }
 
         .hero-cta .btn {
-            padding: 18px 45px;
-            font-size: 1.3rem;
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            padding: 14px 35px; /* slightly smaller */
+            font-size: 1.1rem;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
         }
 
         /* ===== FEATURED PRODUCTS SLIDER ===== */
@@ -875,7 +853,7 @@
             transform: scale(1.05);
         }
 
-        /* ===== FEATURES SECTION ===== */
+        /* ===== FEATURES SECTION (WHY CHOOSE US) ===== */
         .features-section {
             background: #fffaf5;
             padding: 60px 20px;
@@ -884,7 +862,7 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* desktop default 4 */
             gap: 20px;
             max-width: 1100px;
             margin: 0 auto;
@@ -1592,9 +1570,7 @@
                 height: 70%;
             }
 
-            .search-section {
-                display: block;
-            }
+            /* Search section is already visible, no need to change */
         }
 
         @media (max-width: 768px) {
@@ -1607,14 +1583,6 @@
                 display: flex;
             }
             
-            .header-search {
-                display: none;
-            }
-
-            .search-section {
-                display: block;
-            }
-            
             /* Sections */
             .section-title h2 {
                 font-size: 2rem;
@@ -1625,12 +1593,16 @@
             }
             
             .hero-section {
-                padding: 30px 0 40px;
+                padding: 15px 0 25px;
+            }
+            
+            .hero-section .section-title h2 {
+                font-size: 1.8rem;
             }
             
             .hero-cta .btn {
-                padding: 16px 35px;
-                font-size: 1.2rem;
+                padding: 12px 30px;
+                font-size: 1rem;
             }
             
             .featured-section {
@@ -1665,6 +1637,7 @@
                 font-size: 15px;
             }
             
+            /* Why Choose Us: 2 boxes per row on all mobile */
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
@@ -1767,12 +1740,16 @@
             }
             
             .hero-section {
-                padding: 30px 0 35px;
+                padding: 10px 0 20px;
+            }
+            
+            .hero-section .section-title h2 {
+                font-size: 1.6rem;
             }
             
             .hero-cta .btn {
-                padding: 14px 30px;
-                font-size: 1.1rem;
+                padding: 10px 25px;
+                font-size: 0.95rem;
             }
             
             .slider-container {
@@ -1817,8 +1794,14 @@
                 font-size: 15px;
             }
             
+            /* Keep 2 columns on small mobile */
             .features-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .feature-card {
+                padding: 15px 12px;
             }
             
             .location-wrapper {
@@ -1868,9 +1851,8 @@
                 margin-top: 8px;
             }
             
-            .hero-cta .btn {
-                padding: 12px 25px;
-                font-size: 1rem;
+            .hero-section .section-title h2 {
+                font-size: 1.5rem;
             }
             
             .btn {
@@ -1907,8 +1889,10 @@
                 font-size: 24px;
             }
             
-            .feature-card {
-                padding: 15px 12px;
+            /* Ensure 2 columns even at 480px */
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             
             .feature-icon {
@@ -1979,24 +1963,24 @@
                 height: 70px;
             }
             
-            .hero-cta .btn {
-                padding: 10px 20px;
-                font-size: 0.95rem;
+            .hero-section .section-title h2 {
+                font-size: 1.3rem;
             }
             
             .slider-container {
                 height: 220px;
             }
             
+            /* Keep 2 columns */
             .features-grid {
-                gap: 12px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
             }
             
             .location-card {
                 padding: 15px;
             }
 
-            /* Cart items: keep 2 per row */
             .cart-items-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
@@ -2005,7 +1989,7 @@
 
         /* ===== DESKTOP ENHANCEMENTS (≥1024px) ===== */
         @media (min-width: 1024px) {
-            /* Why Choose Us: 4 boxes per row */
+            /* Why Choose Us: 4 boxes per row (already default) */
             .features-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 25px;
@@ -2017,7 +2001,6 @@
                 gap: 25px;
             }
 
-            /* Optional: adjust cart item height for desktop */
             .cart-item-image {
                 height: 200px;
             }
@@ -2032,7 +2015,7 @@
     <!-- Main Header -->
     <header>
         <div class="container">
-            <!-- Desktop Navigation -->
+            <!-- Desktop Navigation (without search bar) -->
             <div class="desktop-nav">
                 <!-- Logo -->
                 <div class="logo-container">
@@ -2043,13 +2026,7 @@
                     </div>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="header-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="siteSearch" placeholder="Search products...">
-                </div>
-
-                <!-- Navigation -->
+                <!-- Navigation (no search inside) -->
                 <nav class="nav-links">
                     <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
                     <a href="#" id="desktopCartIcon"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count" id="desktopCartCount">0</span></a>
@@ -2107,7 +2084,7 @@
         </div>
     </header>
 
-    <!-- Search Section (Added) -->
+    <!-- Search Section (Always visible on desktop and mobile) -->
     <section class="search-section">
         <div class="container">
             <div class="search-container">
@@ -2120,7 +2097,7 @@
         </div>
     </section>
 
-    <!-- Hero Section (UPDATED) -->
+    <!-- Hero Section (UPDATED - smaller) -->
     <section class="hero-section">
         <div class="container">
             <div class="section-title">
@@ -2295,7 +2272,7 @@
             </div>
         </section>
 
-        <!-- Features Section -->
+        <!-- Features Section (Why Choose Us) -->
         <section class="features-section">
             <div class="container">
                 <div class="section-title">
@@ -2461,7 +2438,7 @@
         const serviceModal = document.getElementById('serviceModal');
         const closeServiceModal = document.getElementById('closeServiceModal');
         const modalBody = document.getElementById('modalBody');
-        const searchInput = document.getElementById('siteSearch');
+        // Search is now only in the search section
         const mobileSearchInput = document.getElementById('mobileSiteSearch');
         const searchResults = document.getElementById('searchResults');
 
@@ -2761,7 +2738,7 @@
             }, 3000);
         }
 
-        // Search Functionality
+        // Search Functionality (using the always-visible search input)
         function searchProducts(query) {
             query = query.toLowerCase().trim();
             
@@ -2789,7 +2766,7 @@
             });
         }
 
-        // Handle Enter key on search inputs
+        // Handle Enter key on search input
         function handleSearchEnter(e) {
             if (e.key === 'Enter') {
                 const query = e.target.value.trim();
@@ -2900,12 +2877,7 @@
                 }
             });
             
-            // Search functionality
-            searchInput.addEventListener('input', (e) => {
-                searchProducts(e.target.value);
-            });
-            searchInput.addEventListener('keypress', handleSearchEnter);
-            
+            // Search functionality (only one search input now)
             mobileSearchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
@@ -2913,7 +2885,7 @@
             
             // Close search results when clicking outside
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.header-search') && !e.target.closest('.search-bar')) {
+                if (!e.target.closest('.search-bar')) {
                     searchResults.classList.remove('active');
                 }
             });
