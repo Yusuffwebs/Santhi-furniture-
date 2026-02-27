@@ -384,7 +384,7 @@
             background: white;
             padding: 15px 0;
             border-bottom: 1px solid var(--light-gray);
-            display: block; /* Always visible */
+            display: block;
         }
 
         .search-container {
@@ -573,13 +573,13 @@
 
         /* ===== HERO SECTION (SMALLER) ===== */
         .hero-section {
-            padding: 20px 0 30px; /* reduced from 40px 0 50px */
+            padding: 20px 0 30px;
             background: linear-gradient(135deg, #ffffff 0%, #fdf7ef 100%);
             text-align: center;
         }
 
         .hero-section .section-title h2 {
-            font-size: 2rem; /* slightly smaller */
+            font-size: 2rem;
             margin-bottom: 10px;
         }
 
@@ -589,11 +589,11 @@
         }
 
         .hero-cta {
-            margin-top: 20px; /* reduced */
+            margin-top: 20px;
         }
 
         .hero-cta .btn {
-            padding: 14px 35px; /* slightly smaller */
+            padding: 14px 35px;
             font-size: 1.1rem;
             box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
         }
@@ -862,7 +862,7 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* desktop default 4 */
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             max-width: 1100px;
             margin: 0 auto;
@@ -1569,12 +1569,9 @@
                 width: 70%;
                 height: 70%;
             }
-
-            /* Search section is already visible, no need to change */
         }
 
         @media (max-width: 768px) {
-            /* Header */
             .desktop-nav {
                 display: none;
             }
@@ -1583,7 +1580,6 @@
                 display: flex;
             }
             
-            /* Sections */
             .section-title h2 {
                 font-size: 2rem;
             }
@@ -1637,7 +1633,6 @@
                 font-size: 15px;
             }
             
-            /* Why Choose Us: 2 boxes per row on all mobile */
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
@@ -1701,7 +1696,6 @@
                 font-size: 13px;
             }
 
-            /* Cart items grid: 2 per row on mobile */
             .cart-items-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
@@ -1794,7 +1788,6 @@
                 font-size: 15px;
             }
             
-            /* Keep 2 columns on small mobile */
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
@@ -1889,7 +1882,6 @@
                 font-size: 24px;
             }
             
-            /* Ensure 2 columns even at 480px */
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
@@ -1945,7 +1937,6 @@
                 right: 15px;
             }
 
-            /* Cart items grid: still 2 per row on small mobile */
             .cart-items-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
@@ -1971,7 +1962,6 @@
                 height: 220px;
             }
             
-            /* Keep 2 columns */
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
@@ -1987,15 +1977,12 @@
             }
         }
 
-        /* ===== DESKTOP ENHANCEMENTS (≥1024px) ===== */
         @media (min-width: 1024px) {
-            /* Why Choose Us: 4 boxes per row (already default) */
             .features-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 25px;
             }
 
-            /* Cart modal: 4 items per row */
             .cart-items-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 25px;
@@ -2029,6 +2016,7 @@
                 <!-- Navigation (no search inside) -->
                 <nav class="nav-links">
                     <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+                    <a href="products.html"><i class="fas fa-shopping-bag"></i> Products</a>
                     <a href="#" id="desktopCartIcon"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count" id="desktopCartCount">0</span></a>
                     <a href="#location"><i class="fas fa-map-marker-alt"></i> Location</a>
                     <a href="#" class="customer-service-link" data-service="contact"><i class="fas fa-headset"></i> Customer Service</a>
@@ -2438,7 +2426,6 @@
         const serviceModal = document.getElementById('serviceModal');
         const closeServiceModal = document.getElementById('closeServiceModal');
         const modalBody = document.getElementById('modalBody');
-        // Search is now only in the search section
         const mobileSearchInput = document.getElementById('mobileSiteSearch');
         const searchResults = document.getElementById('searchResults');
 
@@ -2738,7 +2725,7 @@
             }, 3000);
         }
 
-        // Search Functionality (using the always-visible search input)
+        // Search Functionality (redirect to products page)
         function searchProducts(query) {
             query = query.toLowerCase().trim();
             
@@ -2877,7 +2864,7 @@
                 }
             });
             
-            // Search functionality (only one search input now)
+            // Search functionality
             mobileSearchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
@@ -2987,4 +2974,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-</html> 
+</html>
