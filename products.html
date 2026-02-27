@@ -155,19 +155,19 @@
         .desktop-nav {
             display: flex;
             align-items: center;
-            gap: 30px;  /* Increased gap for desktop */
+            gap: 30px;
             width: 100%;
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;  /* Increased gap */
-            margin-left: auto; /* Push nav to the right */
+            gap: 25px;
+            margin-left: auto;
         }
 
         .nav-links a {
             font-weight: 600;
-            font-size: 1rem;  /* Slightly larger */
+            font-size: 1rem;
             color: var(--dark);
             padding: 8px 0;
             position: relative;
@@ -826,6 +826,7 @@
             justify-content: center;
             padding: 25px;
             min-height: 350px;
+            position: relative;
         }
 
         .product-detail-image img {
@@ -1515,7 +1516,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== RESPONSIVE DESIGN (keep mobile unchanged) ===== */
+        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
             .desktop-nav {
                 display: none;
@@ -1792,7 +1793,7 @@
                     <a href="#" class="active"><i class="fas fa-shopping-bag"></i> Products</a>
                     <a href="#" id="cartIcon"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count" id="cartCount">0</span></a>
                     <a href="index.html#location"><i class="fas fa-map-marker-alt"></i> Location</a>
-                    <a href="#" class="customer-service-link"><i class="fas fa-headset"></i> Service</a>
+                    <a href="#" class="customer-service-link" data-service="contact"><i class="fas fa-headset"></i> Customer Service</a>
                 </nav>
             </div>
 
@@ -2075,9 +2076,37 @@
                 const response = await fetch('products.json');
                 productsData = await response.json();
                 
-                // Initialize with furniture category
-                updateSubcategoryButtons('furniture');
-                renderProducts('furniture', 'sofas');
+                // Check URL parameters for initial load
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('search');
+                const categoryParam = urlParams.get('category');
+                const subcategoryParam = urlParams.get('subcategory');
+
+                if (searchQuery) {
+                    // Perform search
+                    searchInput.value = searchQuery;
+                    performSearch(searchQuery);
+                } else if (categoryParam && subcategoryParam) {
+                    // Set category and subcategory from URL
+                    if (categoryParam === 'furniture' || categoryParam === 'appliances') {
+                        currentMainCategory = categoryParam;
+                        // Update active main category button
+                        mainCategoryBtns.forEach(btn => {
+                            btn.classList.remove('active');
+                            if (btn.dataset.category === categoryParam) {
+                                btn.classList.add('active');
+                            }
+                        });
+                        updateSubcategoryButtons(categoryParam);
+                        // Set subcategory active
+                        currentSubcategory = subcategoryParam;
+                        renderProducts(categoryParam, subcategoryParam);
+                    }
+                } else {
+                    // Initialize with furniture category
+                    updateSubcategoryButtons('furniture');
+                    renderProducts('furniture', 'sofas');
+                }
                 
                 loading.style.display = 'none';
             } catch (error) {
@@ -2093,7 +2122,7 @@
             
             Object.entries(subcategories).forEach(([key, label], index) => {
                 const button = document.createElement('button');
-                button.className = `subcategory-btn ${index === 0 ? 'active' : ''}`;
+                button.className = `subcategory-btn ${(index === 0 && !currentSubcategory) || currentSubcategory === key ? 'active' : ''}`;
                 button.dataset.subcategory = key;
                 button.textContent = label;
                 
@@ -2563,20 +2592,11 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // Search Functionality
-        function searchProducts(query) {
+        // Perform search from input
+        function performSearch(query) {
             query = query.toLowerCase().trim();
             
-            if (!query) {
-                searchResults.classList.remove('active');
-                return;
-            }
-            
-            if (!productsData) {
-                searchResults.innerHTML = '<div class="no-results">Products not loaded yet</div>';
-                searchResults.classList.add('active');
-                return;
-            }
+            if (!query || !productsData) return;
             
             const results = [];
             
@@ -2593,7 +2613,38 @@
                 }
             }
             
-            // Display results
+            // Display results in search dropdown
+            displaySearchResults(results);
+            
+            // If we have results, we can also show them in the main grid
+            if (results.length > 0) {
+                productsGrid.innerHTML = '';
+                results.forEach(product => {
+                    const productCard = createProductCard(product);
+                    productCard.addEventListener('click', (e) => {
+                        if (!e.target.closest('.product-actions')) {
+                            showProductDetail(product.id);
+                        }
+                    });
+                    productsGrid.appendChild(productCard);
+                });
+                currentCategoryTitle.textContent = `Search results for "${query}"`;
+                productsCount.textContent = `${results.length} products`;
+            } else {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
+                        <h3>No products found for "${query}"</h3>
+                        <p>Try different keywords or browse our categories.</p>
+                    </div>
+                `;
+                currentCategoryTitle.textContent = `Search results for "${query}"`;
+                productsCount.textContent = `0 products`;
+            }
+        }
+
+        // Display search results in dropdown
+        function displaySearchResults(results) {
             searchResults.innerHTML = '';
             
             if (results.length === 0) {
@@ -2626,6 +2677,45 @@
                     showProductDetail(productId);
                 });
             });
+        }
+
+        // Search Functionality (for input)
+        function searchProducts(query) {
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                searchResults.classList.remove('active');
+                return;
+            }
+            
+            if (!productsData) return;
+            
+            const results = [];
+            
+            // Search through all products
+            for (const category in productsData) {
+                for (const subcategory in productsData[category]) {
+                    productsData[category][subcategory].forEach(product => {
+                        if (product.name.toLowerCase().includes(query) || 
+                            product.description.toLowerCase().includes(query) ||
+                            subcategoryMapping[category][subcategory].toLowerCase().includes(query)) {
+                            results.push(product);
+                        }
+                    });
+                }
+            }
+            
+            displaySearchResults(results);
+        }
+
+        // Handle Enter key on search input
+        function handleSearchEnter(e) {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query && productsData) {
+                    performSearch(query);
+                }
+            }
         }
 
         // Show Notification
@@ -2720,6 +2810,7 @@
             searchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
+            searchInput.addEventListener('keypress', handleSearchEnter);
             
             // Close search results when clicking outside
             document.addEventListener('click', (e) => {
@@ -2785,6 +2876,10 @@
                         productModal.style.display = 'none';
                         document.body.style.overflow = 'auto';
                     }
+                    if (serviceModal.style.display === 'flex') {
+                        serviceModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
                 }
             });
             
@@ -2805,7 +2900,7 @@
                             </div>
                             <div class="service-item">
                                 <h4><i class="fas fa-map-marker-alt"></i> Store Location</h4>
-                                <p><strong>Address:</strong><br>No. 1, Sankagiri Road,<br>Omalur, Salem - 636455<br>Tamil Nadu, India</p>
+                                <p><strong>Address:</strong><br>Veerapathra Samy koil street(opp:Bombay Watch),<br>Nagapattinam, Tamil Nadu</p>
                             </div>
                         </div>
                     `
@@ -2864,14 +2959,6 @@
             closeServiceModal.addEventListener('click', () => {
                 serviceModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-            });
-            
-            // Close service modal with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && serviceModal.style.display === 'flex') {
-                    serviceModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
             });
             
             // Add CSS for notifications and service items
