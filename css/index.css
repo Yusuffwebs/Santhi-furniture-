@@ -663,6 +663,7 @@
     .category-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
+        padding: 0 10px;
     }
     
     .circle {
@@ -699,7 +700,12 @@
     
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .feature-card {
+        padding: 20px 15px;
     }
     
     .location-section {
@@ -709,12 +715,18 @@
 
 @media (max-width: 600px) {
     .category-grid {
+        grid-template-columns: repeat(3, 1fr);
         gap: 15px;
     }
     
     .circle {
-        width: 95px;
-        height: 95px;
+        width: 90px;
+        height: 90px;
+    }
+
+    .category-card span {
+        font-size: 13px;
+        margin-top: 10px;
     }
     
     .hero-section .section-title h2 {
@@ -727,23 +739,33 @@
     
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 15px;
     }
 }
 
 @media (max-width: 480px) {
+    .shop-category {
+        padding: 40px 15px;
+    }
+
     .shop-category h2 {
-        font-size: 24px;
-        margin-bottom: 25px;
+        font-size: 1.8rem;
+        margin-bottom: 30px;
     }
     
     .category-grid {
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
     
     .circle {
         width: 80px;
         height: 80px;
+    }
+
+    .category-card span {
+        font-size: 12px;
+        line-height: 1.2;
     }
     
     .hero-section .section-title h2 {
@@ -752,5 +774,35 @@
     
     .slider-container {
         height: 250px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 25px 20px;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .category-card span {
+        font-size: 14px;
     }
 }
