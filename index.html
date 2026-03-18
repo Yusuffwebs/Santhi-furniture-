@@ -1014,9 +1014,9 @@
         };
 
         // Initialize
-        function init() {
+        async function init() {
             // Load products data
-            loadProducts();
+            await loadProducts();
 
             // Update cart count on load
             updateCartCount();
