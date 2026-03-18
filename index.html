@@ -400,12 +400,12 @@
         </div>
     </footer>
 
-    <!-- Customer Service Modal -->
-    <div class="full-page-modal" id="serviceModal">
+    <!-- Product Detail Full Page Modal -->
+    <div class="full-page-modal" id="productModal">
         <div class="modal-content">
-            <button class="modal-close-btn" id="closeServiceModal">&times;</button>
-            <div id="modalBody">
-                <!-- Content will be loaded here dynamically -->
+            <button class="modal-close-btn" id="closeProductModal">&times;</button>
+            <div class="product-detail-full" id="productDetailContent">
+                <!-- Product details will be loaded here -->
             </div>
         </div>
     </div>
@@ -423,6 +423,7 @@
     <script>
         // State Management
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let productsData = null;
 
         // DOM Elements
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -437,11 +438,44 @@
         const mobileCartCount2 = document.getElementById('mobileCartCount2');
         const cartModal = document.getElementById('cartModal');
         const closeCartModal = document.getElementById('closeCartModal');
+        const productModal = document.getElementById('productModal');
+        const closeProductModal = document.getElementById('closeProductModal');
+        const productDetailContent = document.getElementById('productDetailContent');
         const serviceModal = document.getElementById('serviceModal');
         const closeServiceModal = document.getElementById('closeServiceModal');
         const modalBody = document.getElementById('modalBody');
         const mobileSearchInput = document.getElementById('mobileSiteSearch');
         const searchResults = document.getElementById('searchResults');
+
+        // Subcategory mapping for search
+        const subcategoryMapping = {
+            furniture: {
+                'sofas': 'Sofas',
+                'beds': 'Beds', 
+                'mattress': 'Mattress',
+                'dining': 'Dining Table',
+                'dressing': 'Dressing Table',
+                'wardrobe': 'Wardrobe (Bero)',
+                'pooja': 'Pooja Unit',
+                'teapoy': 'Teapoy'
+            },
+            appliances: {
+                'tv': 'TV',
+                'washing': 'Washing Machine',
+                'refrigerator': 'Refrigerator',
+                'other': 'Other Home Appliances'
+            }
+        };
+
+        // Load products from JSON
+        async function loadProducts() {
+            try {
+                const response = await fetch('products.json');
+                productsData = await response.json();
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
 
         // Mobile Navigation
         mobileMenuBtn.addEventListener('click', () => {
@@ -733,7 +767,115 @@
             }, 3000);
         }
 
-        // Search Functionality (redirect to products page)
+        // Find Product by ID
+        function findProductById(productId) {
+            if (!productsData) return null;
+            
+            for (const category in productsData) {
+                for (const subcategory in productsData[category]) {
+                    const product = productsData[category][subcategory].find(p => p.id === productId);
+                    if (product) return product;
+                }
+            }
+            return null;
+        }
+
+        // Show Product Detail Full Page
+        function showProductDetail(productId) {
+            const product = findProductById(productId);
+            if (!product) return;
+            
+            const discount = product.originalPrice > product.price 
+                ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+                : 0;
+            
+            const imageSrc = product.image || 'https://via.placeholder.com/500x400?text=Product+Image';
+            
+            let specsHtml = '';
+            if (product.material || product.color || product.dimensions || product.size || product.brand) {
+                specsHtml = `
+                    <div class="product-specs">
+                        <h4>Specifications</h4>
+                        <div class="spec-grid">
+                            ${product.material ? `<div class="spec-item"><span class="spec-label">Material:</span><span class="spec-value">${product.material}</span></div>` : ''}
+                            ${product.color ? `<div class="spec-item"><span class="spec-label">Color:</span><span class="spec-value">${product.color}</span></div>` : ''}
+                            ${product.dimensions ? `<div class="spec-item"><span class="spec-label">Dimensions:</span><span class="spec-value">${product.dimensions}</span></div>` : ''}
+                            ${product.size ? `<div class="spec-item"><span class="spec-label">Size:</span><span class="spec-value">${product.size}</span></div>` : ''}
+                            ${product.brand ? `<div class="spec-item"><span class="spec-label">Brand:</span><span class="spec-value">${product.brand}</span></div>` : ''}
+                            ${product.type ? `<div class="spec-item"><span class="spec-label">Type:</span><span class="spec-value">${product.type}</span></div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            productDetailContent.innerHTML = `
+                <div class="product-detail-full">
+                    <div class="product-detail-image">
+                        ${discount > 0 ? `<div class="product-badge">${discount}% OFF</div>` : ''}
+                        <img src="${imageSrc}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/500x400?text=Product+Image'">
+                    </div>
+                    <div class="product-detail-info">
+                        <h2 class="product-detail-title">${product.name}</h2>
+                        <div class="product-detail-price">
+                            ${product.originalPrice > product.price ? 
+                                `<span style="font-size: 1.2rem; color: #888; text-decoration: line-through; margin-right: 15px;">₹${product.originalPrice.toLocaleString()}</span>` : ''}
+                            ₹${product.price.toLocaleString()}
+                        </div>
+                        <p class="product-detail-description">${product.description}</p>
+                        
+                        ${specsHtml}
+                        
+                        <div class="product-features">
+                            <h4>Features</h4>
+                            <ul>
+                                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <button class="btn-whatsapp" id="whatsappOrderBtn">
+                                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                            </button>
+                            <button class="btn-add-to-cart" id="addToCartDetailBtn">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            productModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Event listeners for detail modal buttons
+            document.getElementById('whatsappOrderBtn').addEventListener('click', () => {
+                let message = `Hello! I would like to order:\n\n`;
+                message += `Product: ${product.name}\n`;
+                message += `Price: ₹${product.price.toLocaleString()}\n`;
+                message += `\nPlease confirm availability.`;
+                const phoneNumber = '919443190337';
+                window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            });
+            
+            document.getElementById('addToCartDetailBtn').addEventListener('click', () => {
+                const existingItem = cart.find(item => item.id === product.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        quantity: 1
+                    });
+                }
+                updateCartCount();
+                showNotification(`${product.name} added to cart!`);
+            });
+        }
+
+        // Search Functionality
         function searchProducts(query) {
             query = query.toLowerCase().trim();
             
@@ -741,24 +883,72 @@
                 searchResults.classList.remove('active');
                 return;
             }
+
+            if (!productsData) return;
             
-            // Show a message and redirect to products page
-            searchResults.innerHTML = `
-                <div class="search-result-item" id="searchRedirect">
-                    <i class="fas fa-search" style="font-size: 1.2rem; color: var(--secondary);"></i>
-                    <div class="search-result-info">
-                        <h4>Search for "${query}"</h4>
-                        <p>Click to search in products page</p>
-                    </div>
+            const results = [];
+            // Search through all products
+            for (const category in productsData) {
+                for (const subcategory in productsData[category]) {
+                    productsData[category][subcategory].forEach(product => {
+                        if (product.name.toLowerCase().includes(query) || 
+                            product.description.toLowerCase().includes(query) ||
+                            subcategoryMapping[category][subcategory].toLowerCase().includes(query)) {
+                            results.push(product);
+                        }
+                    });
+                }
+            }
+            
+            displaySearchResults(results, query);
+        }
+
+        // Display search results
+        function displaySearchResults(results, query) {
+            searchResults.innerHTML = '';
+            
+            // Add "Search for..." option at the top
+            const searchForOption = document.createElement('div');
+            searchForOption.className = 'search-result-item';
+            searchForOption.innerHTML = `
+                <i class="fas fa-search" style="font-size: 1.2rem; color: var(--secondary); width: 45px; display: flex; justify-content: center;"></i>
+                <div class="search-result-info">
+                    <h4>Search for "${query}"</h4>
+                    <p>Click to see all results in products page</p>
                 </div>
             `;
-            
-            searchResults.classList.add('active');
-            
-            // Add click event to result item
-            document.getElementById('searchRedirect').addEventListener('click', () => {
+            searchForOption.addEventListener('click', () => {
                 window.location.href = `products.html?search=${encodeURIComponent(query)}`;
             });
+            searchResults.appendChild(searchForOption);
+
+            if (results.length > 0) {
+                results.slice(0, 6).forEach(product => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    const imageSrc = product.image || 'https://via.placeholder.com/50x50?text=Product';
+                    resultItem.innerHTML = `
+                        <img src="${imageSrc}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/50x50?text=Product'">
+                        <div class="search-result-info">
+                            <h4>${product.name}</h4>
+                            <p>₹${product.price.toLocaleString()}</p>
+                        </div>
+                    `;
+                    resultItem.addEventListener('click', () => {
+                        searchResults.classList.remove('active');
+                        mobileSearchInput.value = '';
+                        showProductDetail(product.id);
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+            } else if (query.length > 0) {
+                const noResult = document.createElement('div');
+                noResult.className = 'no-results';
+                noResult.textContent = 'No matching products found';
+                searchResults.appendChild(noResult);
+            }
+            
+            searchResults.classList.add('active');
         }
 
         // Handle Enter key on search input
@@ -825,6 +1015,9 @@
 
         // Initialize
         function init() {
+            // Load products data
+            loadProducts();
+
             // Update cart count on load
             updateCartCount();
             
@@ -853,6 +1046,11 @@
                 document.body.style.overflow = 'auto';
             });
             
+            closeProductModal.addEventListener('click', () => {
+                productModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
             closeServiceModal.addEventListener('click', () => {
                 serviceModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -863,6 +1061,10 @@
                 if (e.key === 'Escape') {
                     if (cartModal.style.display === 'flex') {
                         cartModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                    if (productModal.style.display === 'flex') {
+                        productModal.style.display = 'none';
                         document.body.style.overflow = 'auto';
                     }
                     if (serviceModal.style.display === 'flex') {
@@ -900,41 +1102,6 @@
                     }
                 });
             });
-            
-            // Add CSS for service items
-            const style = document.createElement('style');
-            style.textContent = `
-                .service-item {
-                    margin-bottom: 25px;
-                    padding-bottom: 25px;
-                    border-bottom: 1px solid var(--light-gray);
-                }
-                .service-item:last-child {
-                    border-bottom: none;
-                    margin-bottom: 0;
-                    padding-bottom: 0;
-                }
-                .service-item h4 {
-                    font-size: 1.2rem;
-                    color: var(--primary);
-                    margin-bottom: 12px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-                .service-item h4 i {
-                    color: var(--secondary);
-                }
-                .service-item p {
-                    color: var(--gray);
-                    line-height: 1.7;
-                    font-size: 1rem;
-                }
-                .service-item strong {
-                    color: var(--dark);
-                }
-            `;
-            document.head.appendChild(style);
 
             // Scroll animations for About Brand section
             const aboutBrandElements = document.querySelectorAll('.tagline, .brand-name, .description, .features-title');
