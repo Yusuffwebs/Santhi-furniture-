@@ -964,31 +964,17 @@
             
             const notification = document.createElement('div');
             notification.className = 'notification';
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: var(--secondary);
-                color: white;
-                padding: 15px 20px;
-                border-radius: var(--radius);
-                z-index: 9999;
-                animation: slideIn 0.3s ease;
-                box-shadow: var(--shadow-lg);
-                max-width: 300px;
-                font-weight: 600;
-            `;
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
+                notification.style.animation = 'slideOut 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
                 setTimeout(() => {
                     if (notification.parentNode) {
                         document.body.removeChild(notification);
                     }
-                }, 300);
+                }, 400);
             }, 3000);
         }
 
@@ -1198,49 +1184,6 @@
                 serviceModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             });
-            
-            // Add CSS for notifications and service items
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-                .service-item {
-                    margin-bottom: 25px;
-                    padding-bottom: 25px;
-                    border-bottom: 1px solid var(--light-gray);
-                }
-                .service-item:last-child {
-                    border-bottom: none;
-                    margin-bottom: 0;
-                    padding-bottom: 0;
-                }
-                .service-item h4 {
-                    font-size: 1.2rem;
-                    color: var(--primary);
-                    margin-bottom: 12px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-                .service-item h4 i {
-                    color: var(--secondary);
-                }
-                .service-item p {
-                    color: var(--gray);
-                    line-height: 1.7;
-                    font-size: 1rem;
-                }
-                .service-item strong {
-                    color: var(--dark);
-                }
-            `;
-            document.head.appendChild(style);
         }
 
         // Initialize when DOM is loaded

@@ -543,11 +543,17 @@
                         <i class="fas fa-shopping-cart"></i>
                         <h3>Your cart is empty</h3>
                         <p>Add some products to get started!</p>
-                        <a href="products.html" class="btn btn-primary" style="margin-top: 20px; display: inline-flex;">
+                        <button class="btn btn-primary" id="continueShoppingBtn" style="margin-top: 20px;">
                             <i class="fas fa-shopping-bag"></i> Continue Shopping
-                        </a>
+                        </button>
                     </div>
                 `;
+                
+                document.getElementById('continueShoppingBtn').addEventListener('click', () => {
+                    cartModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+                
                 return;
             }
             
@@ -588,31 +594,33 @@
                     <p>${cart.length} item${cart.length !== 1 ? 's' : ''} in your cart</p>
                 </div>
                 
-                <div class="cart-items-grid">
-                    ${cartItemsHTML}
-                </div>
-                
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span class="summary-label">Subtotal:</span>
-                        <span class="summary-value">₹${total.toLocaleString()}</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label">Delivery:</span>
-                        <span class="summary-value">Free</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label">Total:</span>
-                        <span class="cart-total">₹${total.toLocaleString()}</span>
+                <div class="cart-main-layout">
+                    <div class="cart-items-grid">
+                        ${cartItemsHTML}
                     </div>
                     
-                    <div class="cart-actions">
-                        <button class="btn-clear-cart" id="clearCartBtn">
-                            <i class="fas fa-trash"></i> Clear Cart
-                        </button>
-                        <button class="btn-checkout" id="checkoutBtn">
-                            <i class="fab fa-whatsapp"></i> Checkout on WhatsApp
-                        </button>
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal:</span>
+                            <span class="summary-value">₹${total.toLocaleString()}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Delivery:</span>
+                            <span class="summary-value">Free</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Total:</span>
+                            <span class="cart-total">₹${total.toLocaleString()}</span>
+                        </div>
+                        
+                        <div class="cart-actions">
+                            <button class="btn-clear-cart" id="clearCartBtn">
+                                <i class="fas fa-trash"></i> Clear Cart
+                            </button>
+                            <button class="btn-checkout" id="checkoutBtn">
+                                <i class="fab fa-whatsapp"></i> Checkout on WhatsApp
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -711,31 +719,17 @@
             
             const notification = document.createElement('div');
             notification.className = 'notification';
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: var(--secondary);
-                color: white;
-                padding: 15px 20px;
-                border-radius: var(--radius);
-                z-index: 9999;
-                animation: slideIn 0.3s ease;
-                box-shadow: var(--shadow-lg);
-                max-width: 300px;
-                font-weight: 600;
-            `;
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
+                notification.style.animation = 'slideOut 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
                 setTimeout(() => {
                     if (notification.parentNode) {
                         document.body.removeChild(notification);
                     }
-                }, 300);
+                }, 400);
             }, 3000);
         }
 
