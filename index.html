@@ -2,64 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Santhi Furniture Mart & Home Appliances | Premium Home Solutions</title>
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
-    
-    <!-- inline style to make WhatsApp button smaller & ensure design consistency -->
-    <style>
-        /* Make WhatsApp chat button smaller (compact and elegant) */
-        .whatsapp-chat .whatsapp-btn {
-            width: 48px !important;
-            height: 48px !important;
-            line-height: 48px !important;
-            font-size: 26px !important;
-            display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            background-color: #25D366 !important;
-            border-radius: 50% !important;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            text-decoration: none;
-        }
-        .whatsapp-chat .whatsapp-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-            background-color: #20b859 !important;
-        }
-        /* Ensure icon inside is perfectly centered */
-        .whatsapp-chat .whatsapp-btn i {
-            font-size: inherit;
-            line-height: 1;
-        }
-        /* optional: adjust container position if needed (no breaking changes) */
-        .whatsapp-chat {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        /* responsive touch - keep same positioning */
-        @media (max-width: 768px) {
-            .whatsapp-chat .whatsapp-btn {
-                width: 44px !important;
-                height: 44px !important;
-                line-height: 44px !important;
-                font-size: 24px !important;
-            }
-            .whatsapp-chat {
-                bottom: 16px;
-                right: 16px;
-            }
-        }
-        /* No footer "developed by yusoft tech" - ensured, all original content kept */
-    </style>
+</head>
+
+        
 </head>
 <body>
     <!-- Main Header -->
@@ -402,14 +354,14 @@
         </section>
     </main>
 
-    <!-- WhatsApp Chat - smaller button + number updated to 9944273512 -->
+    <!-- WhatsApp Chat -->
     <div class="whatsapp-chat">
-        <a href="https://wa.me/919944273512" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+        <a href="https://wa.me/919443190337" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>
 
-    <!-- Footer (No 'developed by yusoft tech' line, preserved original content) -->
+    <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-brand">
@@ -508,6 +460,8 @@
         
         function updateSlider() {
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update active dot
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
@@ -533,7 +487,10 @@
             });
         });
         
+        // Auto slide every 5 seconds
         let slideInterval = setInterval(nextSlide, 5000);
+        
+        // Pause auto-slide on hover
         const sliderContainer = document.querySelector('.slider-container');
         sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
         sliderContainer.addEventListener('mouseleave', () => {
@@ -549,6 +506,8 @@
             desktopCartCount.textContent = totalItems;
             mobileCartCount.textContent = totalItems;
             mobileCartCount2.textContent = totalItems;
+            
+            // Save to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
         }
 
@@ -575,10 +534,12 @@
                         </button>
                     </div>
                 `;
+                
                 document.getElementById('continueShoppingBtn').addEventListener('click', () => {
                     cartModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
                 });
+                
                 return;
             }
             
@@ -650,21 +611,28 @@
                 </div>
             `;
             
-            // Quantity handlers
+            // Add event listeners to quantity buttons
             document.querySelectorAll('.quantity-btn.decrease').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = e.target.closest('button').dataset.id;
                     const item = cart.find(item => item.id === productId);
-                    if (item) updateQuantity(productId, item.quantity - 1);
+                    if (item) {
+                        updateQuantity(productId, item.quantity - 1);
+                    }
                 });
             });
+            
             document.querySelectorAll('.quantity-btn.increase').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = e.target.closest('button').dataset.id;
                     const item = cart.find(item => item.id === productId);
-                    if (item) updateQuantity(productId, item.quantity + 1);
+                    if (item) {
+                        updateQuantity(productId, item.quantity + 1);
+                    }
                 });
             });
+            
+            // Add event listeners to remove buttons
             document.querySelectorAll('.cart-item-remove').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = e.target.closest('button').dataset.id;
@@ -672,11 +640,13 @@
                 });
             });
             
+            // Add event listeners to cart action buttons
             document.getElementById('clearCartBtn').addEventListener('click', () => {
                 if (cart.length === 0) {
                     showNotification('Cart is already empty!');
                     return;
                 }
+                
                 if (confirm('Are you sure you want to clear your cart?')) {
                     cart = [];
                     updateCartCount();
@@ -685,29 +655,34 @@
                 }
             });
             
-            // CHECKOUT: updated WhatsApp number to 9944273512 (consistent with floating button)
             document.getElementById('checkoutBtn').addEventListener('click', () => {
                 let message = 'Hello! I would like to order the following items from Santhi Furniture:\n\n';
-                let totalAmount = 0;
+                let total = 0;
+                
                 cart.forEach(item => {
                     const itemTotal = item.price * item.quantity;
-                    totalAmount += itemTotal;
+                    total += itemTotal;
                     message += `• ${item.name} x${item.quantity} - ₹${itemTotal.toLocaleString()}\n`;
                 });
-                message += `\nTotal: ₹${totalAmount.toLocaleString()}\n`;
+                
+                message += `\nTotal: ₹${total.toLocaleString()}\n`;
                 message += `\nMy Details:\nName: [Please provide your name]\nAddress: [Please provide your address]\nPhone: [Please provide your phone number]\n\nPlease confirm my order.`;
-                const phoneNumber = '919944273512';   // updated to new WhatsApp contact 9944273512
+                
+                const phoneNumber = '919443190337';
                 const encodedMessage = encodeURIComponent(message);
                 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                
                 window.open(whatsappUrl, '_blank');
             });
         }
 
+        // Update Quantity
         function updateQuantity(productId, newQuantity) {
             const item = cart.find(item => item.id === productId);
             if (item) {
-                if (newQuantity < 1) removeFromCart(productId);
-                else {
+                if (newQuantity < 1) {
+                    removeFromCart(productId);
+                } else {
                     item.quantity = newQuantity;
                     updateCartCount();
                     renderCart();
@@ -715,23 +690,31 @@
             }
         }
 
+        // Remove from Cart
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             updateCartCount();
             renderCart();
         }
 
+        // Show Notification
         function showNotification(message) {
+            // Remove existing notifications
             const existingNotifications = document.querySelectorAll('.notification');
             existingNotifications.forEach(notification => notification.remove());
+            
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
             document.body.appendChild(notification);
+            
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
                 setTimeout(() => {
-                    if (notification.parentNode) document.body.removeChild(notification);
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
                 }, 400);
             }, 3000);
         }
@@ -744,7 +727,7 @@
                     <div style="max-width: 800px; margin: 0 auto; padding-top: 40px;">
                         <div class="service-item">
                             <h4><i class="fas fa-phone-alt"></i> Contact Information</h4>
-                            <p><strong>Customer Support:</strong> +91 9443190337<br><strong>WhatsApp:</strong> +91 9944273512<br><strong>Email:</strong> santhifurnituremart@gmail.com</p>
+                            <p><strong>Customer Support:</strong> +91 9443190337<br><strong>WhatsApp:</strong> +91 9443190337<br><strong>Email:</strong> santhifurnituremart@gmail.com</p>
                             <p><strong>Service Hours:</strong><br>Monday to Saturday: 9 AM - 9 PM<br>Sunday: 10 AM - 6 PM</p>
                         </div>
                         <div class="service-item">
@@ -788,26 +771,63 @@
             }
         };
 
+        // Initialize
         function init() {
+            // Update cart count on load
             updateCartCount();
+            
+            // Initialize slider
             updateSlider();
-            desktopCartIcon.addEventListener('click', (e) => { e.preventDefault(); showCartModalFunc(); });
-            mobileCartIcon.addEventListener('click', (e) => { e.preventDefault(); showCartModalFunc(); });
-            mobileCartLink.addEventListener('click', (e) => { e.preventDefault(); showCartModalFunc(); });
-            closeCartModal.addEventListener('click', () => { cartModal.style.display = 'none'; document.body.style.overflow = 'auto'; });
-            closeServiceModal.addEventListener('click', () => { serviceModal.style.display = 'none'; document.body.style.overflow = 'auto'; });
+            
+            // Cart event listeners
+            desktopCartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartModalFunc();
+            });
+            
+            mobileCartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartModalFunc();
+            });
+            
+            mobileCartLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartModalFunc();
+            });
+            
+            // Close modals
+            closeCartModal.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            closeServiceModal.addEventListener('click', () => {
+                serviceModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close modals with Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    if (cartModal.style.display === 'flex') { cartModal.style.display = 'none'; document.body.style.overflow = 'auto'; }
-                    if (serviceModal.style.display === 'flex') { serviceModal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+                    if (cartModal.style.display === 'flex') {
+                        cartModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                    if (serviceModal.style.display === 'flex') {
+                        serviceModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
                 }
             });
             
+            // Customer Service Modal
             document.querySelectorAll('.customer-service-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    
                     const serviceType = this.getAttribute('data-service') || 'contact';
                     const service = serviceData[serviceType];
+                    
                     if (service) {
                         modalBody.innerHTML = service.content;
                         serviceModal.style.display = 'flex';
@@ -816,37 +836,84 @@
                 });
             });
             
-            const styleService = document.createElement('style');
-            styleService.textContent = `
-                .service-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #eaeef2; }
-                .service-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-                .service-item h4 { font-size: 1.2rem; color: #c17b2e; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-                .service-item h4 i { color: #b87333; }
-                .service-item p { color: #4a5568; line-height: 1.7; font-size: 1rem; }
-                .service-item strong { color: #2d3748; }
+            // Add CSS for service items
+            const style = document.createElement('style');
+            style.textContent = `
+                .service-item {
+                    margin-bottom: 25px;
+                    padding-bottom: 25px;
+                    border-bottom: 1px solid var(--light-gray);
+                }
+                .service-item:last-child {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+                .service-item h4 {
+                    font-size: 1.2rem;
+                    color: var(--primary);
+                    margin-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .service-item h4 i {
+                    color: var(--secondary);
+                }
+                .service-item p {
+                    color: var(--gray);
+                    line-height: 1.7;
+                    font-size: 1rem;
+                }
+                .service-item strong {
+                    color: var(--dark);
+                }
             `;
-            document.head.appendChild(styleService);
-            
+            document.head.appendChild(style);
+
+            // Scroll animations for About Brand section
             const aboutBrandElements = document.querySelectorAll('.tagline, .brand-name, .description, .features-title');
             const featuresListItems = document.querySelectorAll('.features li');
             const featureCards = document.querySelectorAll('.feature-card');
+            
+            // Scroll animation function
             function handleScrollAnimations() {
-                aboutBrandElements.forEach((el, idx) => {
+                // About Brand animations
+                aboutBrandElements.forEach((el, index) => {
                     const rect = el.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 100) { el.classList.add('fade-up'); el.style.animationDelay = `${idx * 0.2}s`; }
+                    if (rect.top < window.innerHeight - 100) {
+                        el.classList.add('fade-up');
+                        el.style.animationDelay = `${index * 0.2}s`;
+                    }
                 });
-                featuresListItems.forEach((item, idx) => {
+                
+                // Features list animations
+                featuresListItems.forEach((item, index) => {
                     const rect = item.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 100) { item.classList.add('fade-right'); item.style.animationDelay = `${1.1 + idx * 0.2}s`; }
+                    if (rect.top < window.innerHeight - 100) {
+                        item.classList.add('fade-right');
+                        item.style.animationDelay = `${1.1 + index * 0.2}s`;
+                    }
                 });
-                featureCards.forEach((card, idx) => {
+                
+                // Why Choose Us feature cards animations
+                featureCards.forEach((card, index) => {
                     const rect = card.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 100) { card.classList.add('animate'); card.style.animationDelay = `${idx * 0.2}s`; }
+                    if (rect.top < window.innerHeight - 100) {
+                        card.classList.add('animate');
+                        card.style.animationDelay = `${index * 0.2}s`;
+                    }
                 });
             }
+            
+            // Initial check on page load
             window.addEventListener('load', handleScrollAnimations);
+            
+            // Check on scroll
             window.addEventListener('scroll', handleScrollAnimations);
         }
+
+        // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
